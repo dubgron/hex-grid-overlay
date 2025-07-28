@@ -1,7 +1,5 @@
 const VERTEX_SHADER = `
-#ifdef GL_ES
 precision mediump float;
-#endif
 
 attribute vec2 position;
 attribute vec2 tex_coords;

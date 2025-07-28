@@ -1,7 +1,5 @@
 const FRAGMENT_SHADER = `
-#ifdef GL_ES
 precision mediump float;
-#endif
 
 uniform vec2 u_resolution;
 uniform sampler2D u_texture;
@@ -9,26 +7,31 @@ uniform float u_grid_size;
 uniform vec2 u_grid_offset;
 uniform float u_grid_thickness;
 uniform vec3 u_grid_color;
+uniform int u_hex_orientation; // 0 = horizontal, 1 = vertical
 
 varying vec2 v_tex_coords;
 
 #define SQRT_3 1.7320508
 
-vec2 hex_side = vec2(SQRT_3, 1);
+bool orientation_vertical = (u_hex_orientation == 1);
+vec2 hex_side = orientation_vertical ? vec2(1, SQRT_3) : vec2(SQRT_3, 1);
 
 float hex_dist(vec2 p)
 {
     p = abs(p);
-    return 1.0 - 2.0 * max(dot(p, hex_side * 0.5), p.y);
+    float min_dist = orientation_vertical ? p.x : p.y;
+    return 1.0 - 2.0 * max(dot(p, hex_side * 0.5), min_dist);
 }
 
 vec4 hex_coords(vec2 p)
 {
-    vec4 hc = floor(vec4(p, p - vec2(hex_side.x / 2.0, 0.5)) / hex_side.xyxy) + 0.5;
+    vec4 hc = floor(vec4(p, p - hex_side * 0.5) / hex_side.xyxy) + 0.5;
     vec4 rg = vec4(p - hc.xy * hex_side, p - (hc.zw + 0.5) * hex_side);
 
-    if (dot(rg.xy, rg.xy) < dot(rg.zw, rg.zw)) return vec4(rg.xy, hc.xy);
-    else return vec4(rg.zw, hc.zw + 0.5);
+    if (dot(rg.xy, rg.xy) < dot(rg.zw, rg.zw))
+        return vec4(rg.xy, hc.xy);
+    else
+        return vec4(rg.zw, hc.zw + 0.5);
 }
 
 void main()

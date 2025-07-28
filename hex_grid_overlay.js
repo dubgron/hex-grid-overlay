@@ -20,6 +20,11 @@ const thickness_slider = document.getElementById("thickness_slider");
 thickness_input.disabled = thickness_slider.disabled = true;
 
 const color_input = document.getElementById("color_input");
+color_input.disabled = true;
+
+const orientation_horizontal_input = document.getElementById("orientation_horizontal");
+const orientation_vertical_input = document.getElementById("orientation_vertical");
+orientation_horizontal_input.disabled = orientation_vertical_input.disabled = true;
 
 const canvas = document.getElementById("canvas");
 const gl = canvas.getContext("webgl2");
@@ -90,6 +95,8 @@ function init_hex_grid()
     offset_x_input.disabled = offset_x_slider.disabled = false;
     offset_y_input.disabled = offset_y_slider.disabled = false;
     thickness_input.disabled = thickness_slider.disabled = false;
+    color_input.disabled = false;
+    orientation_horizontal_input.disabled = orientation_vertical_input.disabled = false;
 }
 
 function hex_to_rgb(hex)
@@ -119,9 +126,11 @@ function draw_hex_grid()
     gl.uniform1f(grid_thickness_location, thickness_input.value);
 
     const color = hex_to_rgb(color_input.value);
-
     const grid_color_location = gl.getUniformLocation(program, "u_grid_color");
     gl.uniform3f(grid_color_location, color.r, color.g, color.b);
+
+    const hex_orientation_location = gl.getUniformLocation(program, "u_hex_orientation");
+    gl.uniform1i(hex_orientation_location, orientation_vertical_input.checked);
 
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
