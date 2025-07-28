@@ -27,7 +27,12 @@
         }
 
         canvas {
+            display: none;
             max-width: 100%;
+        }
+
+        canvas.output {
+            display: block;
         }
     </style>
 </head>
@@ -79,17 +84,27 @@
         </section>
 
         <section style="text-align: left;">
-            <label>Orientation</label>
+            <label>
+                Orientation
+                <br>
+                <input id="orientation_horizontal" type="radio" name="orientation" value="Horizontal" checked oninput="draw_hex_grid()">
+                <label for="orientation_horizontal">Horizontal</label>
+                <br>
+                <input id="orientation_vertical" type="radio" name="orientation" value="Vertical" oninput="draw_hex_grid()">
+                <label for="orientation_vertical">Vertical</label>
+            </label>
+        </section>
+
+        <section>
+            <label for="number_hexes">Number hexes</label>
             <br>
-            <input id="orientation_horizontal" type="radio" name="orientation" value="Horizontal" checked oninput="draw_hex_grid()">
-            <label for="orientation_horizontal">Horizontal</label>
-            <br>
-            <input id="orientation_vertical" type="radio" name="orientation" value="Vertical" oninput="draw_hex_grid()">
-            <label for="orientation_vertical">Vertical</label>
+            <input id="number_hexes" type="checkbox" oninput="draw_hex_grid()">
         </section>
     </header>
 
-    <canvas id="canvas"></canvas>
+    <canvas id="grid_canvas"></canvas>
+    <canvas id="text_canvas"></canvas>
+    <canvas id="output_canvas" class="output"></canvas>
     <script src="hex_grid_overlay.js"></script>
 </body>
 

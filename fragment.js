@@ -1,7 +1,7 @@
 const FRAGMENT_SHADER = `
 precision mediump float;
 
-uniform vec2 u_resolution;
+uniform vec2 u_canvas_size;
 uniform sampler2D u_texture;
 uniform float u_grid_size;
 uniform vec2 u_grid_offset;
@@ -23,26 +23,26 @@ float hex_dist(vec2 p)
     return 1.0 - 2.0 * max(dot(p, hex_side * 0.5), min_dist);
 }
 
-vec4 hex_coords(vec2 p)
+vec2 hex_coords(vec2 p)
 {
     vec4 hc = floor(vec4(p, p - hex_side * 0.5) / hex_side.xyxy) + 0.5;
     vec4 rg = vec4(p - hc.xy * hex_side, p - (hc.zw + 0.5) * hex_side);
 
     if (dot(rg.xy, rg.xy) < dot(rg.zw, rg.zw))
-        return vec4(rg.xy, hc.xy);
+        return rg.xy;
     else
-        return vec4(rg.zw, hc.zw + 0.5);
+        return rg.zw;
 }
 
 void main()
 {
-    vec2 uv = gl_FragCoord.xy - u_resolution.xy * 0.5;
+    vec2 uv = gl_FragCoord.xy - u_canvas_size * 0.5;
 
     float hex_per_pixel = 1.0 / u_grid_size;
 
     vec2 p = (uv - u_grid_offset) * hex_per_pixel;
-    vec4 h = hex_coords(p);
-    float d = hex_dist(h.xy);
+    vec2 h = hex_coords(p);
+    float d = hex_dist(h);
 
     float t = 2.0 * (u_grid_thickness - 1.0) * hex_per_pixel;
     float s = smoothstep(t, t + hex_per_pixel, d);
