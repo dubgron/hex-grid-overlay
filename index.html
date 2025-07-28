@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hex Grid Overlay</title>
+
+    <script src="vertex.js"></script>
+    <script src="fragment.js"></script>
+
+    <style>
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        section {
+            text-align: center;
+        }
+
+        label {
+            margin: 0.25rem;
+        }
+
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Hex Grid Overlay</h1>
+    <header>
+        <input accept="image/*" type="file" onchange="on_file_selected(event)">
+
+        <section>
+            <label for="mile_size_input">Pixels per mile</label>
+            <input id="mile_size_input" type="number" value="20" step="0.5" oninput="on_mile_size_input_changed(this.value)">
+            <br>
+            <input id="mile_size_slider" type="range" value="20" min="1" max="500" step="0.5" oninput="on_mile_size_slider_changed(this.value)">
+        </section>
+
+        <section>
+            <label for="hex_size_input">Miles per hex</label>
+            <input id="hex_size_input" type="number" value="6" step="0.5" oninput="on_hex_size_input_changed(this.value)">
+            <br>
+            <input id="hex_size_slider" type="range" value="6" min="1" max="64" step="0.5" oninput="on_hex_size_slider_changed(this.value)">
+        </section>
+
+        <section>
+            <label for="offset_x_input">Offset X</label>
+            <input id="offset_x_input" type="number" value="0" oninput="on_offset_x_input_changed(this.value)">
+            <br>
+            <input id="offset_x_slider" type="range" value="0" min="-500" max="500" oninput="on_offset_x_slider_changed(this.value)">
+        </section>
+
+        <section>
+            <label for="offset_y_input">Offset Y</label>
+            <input id="offset_y_input" type="number" value="0" oninput="on_offset_y_input_changed(this.value)">
+            <br>
+            <input id="offset_y_slider" type="range" value="0" min="-500" max="500" oninput="on_offset_y_slider_changed(this.value)">
+        </section>
+
+        <section>
+            <label for="thickness_input">Thickness</label>
+            <input id="thickness_input" type="number" value="3" step="0.5" oninput="on_thickness_input_changed(this.value)">
+            <br>
+            <input id="thickness_slider" type="range" value="3" min="1" step="0.5" oninput="on_thickness_slider_changed(this.value)">
+        </section>
+
+        <section>
+            <label for="color_input">Color</label>
+            <input id="color_input" type="color" value="#000000" oninput="draw_hex_grid()">
+        </section>
+    </header>
+
+    <canvas id="canvas"></canvas>
+    <script src="hex_grid_overlay.js"></script>
+</body>
+
+</html>
