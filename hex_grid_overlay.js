@@ -29,6 +29,12 @@ orientation_horizontal_input.disabled = orientation_vertical_input.disabled = tr
 const number_hexes_input = document.getElementById("number_hexes");
 number_hexes_input.disabled = true;
 
+const bottom_to_top_input = document.getElementById("bottom_to_top");
+bottom_to_top_input.disabled = true;
+
+const top_to_bottom_input = document.getElementById("top_to_bottom");
+top_to_bottom_input.disabled = true;
+
 const grid_canvas = document.getElementById("grid_canvas");
 const gl = grid_canvas.getContext("webgl2");
 
@@ -200,7 +206,9 @@ function draw_hex_grid()
 
                 for (let y = 0; y < y_count; ++y)
                 {
-                    const label = String(x).padStart(2, '0') + String(y).padStart(2, '0');
+                    const display_x = x + 1;
+                    const display_y = top_to_bottom_input.checked ? y_count - y : y + 1;
+                    const label = String(display_x).padStart(2, '0') + String(display_y).padStart(2, '0');
 
                     const pos_x = x_first + x_stride * x;
                     const pos_y = y_first - y_stride * y + y_offset;
@@ -244,7 +252,9 @@ function draw_hex_grid()
 
                 for (let x = 0; x < x_count; ++x)
                 {
-                    const label = String(x).padStart(2, '0') + String(y).padStart(2, '0');
+                    const display_x = x + 1;
+                    const display_y = top_to_bottom_input.checked ? y_count - y : y + 1;
+                    const label = String(display_x).padStart(2, '0') + String(display_y).padStart(2, '0');
 
                     const pos_x = x_first + x_stride * x + x_offset;
                     const pos_y = y_first - y_stride * y + y_offset;
@@ -256,7 +266,6 @@ function draw_hex_grid()
         }
     }
 
-    output.width =
     output.drawImage(grid_canvas, 0, 0);
     output.drawImage(text_canvas, 0, 0);
 }
@@ -327,5 +336,11 @@ function on_thickness_input_changed(value)
 function on_thickness_slider_changed(value)
 {
     thickness_input.value = value;
+    draw_hex_grid();
+}
+
+function number_hexes_input_changed(checked)
+{
+    bottom_to_top_input.disabled = top_to_bottom_input.disabled = !checked;
     draw_hex_grid();
 }

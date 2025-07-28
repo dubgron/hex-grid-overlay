@@ -98,7 +98,18 @@
         <section>
             <label for="number_hexes">Number hexes</label>
             <br>
-            <input id="number_hexes" type="checkbox" oninput="draw_hex_grid()">
+            <input id="number_hexes" type="checkbox" oninput="number_hexes_input_changed(this.checked)">
+        </section>
+        <section>
+            <label>
+                Numbering order
+                <br>
+                <input id="bottom_to_top" type="radio" name="ordering" checked oninput="draw_hex_grid()">
+                <label for="bottom_to_top">Bottom to top</label>
+                <br>
+                <input id="top_to_bottom" type="radio" name="ordering" oninput="draw_hex_grid()">
+                <label for="bottom_to_top">Top to bottom</label>
+            </label>
         </section>
     </header>
 
